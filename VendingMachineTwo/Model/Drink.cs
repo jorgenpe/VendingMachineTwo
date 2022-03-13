@@ -32,7 +32,7 @@ namespace VendingMachine.Model
 
         public override string Examine()
         {
-            return $"{BeverageType}: {PackageType}: {BeverageDescription}";
+            return $"{id}: price: {priceOfProduct}: {productName}: {BeverageType}: {PackageType}: {BeverageDescription}";
         }
 
         public override string Use()

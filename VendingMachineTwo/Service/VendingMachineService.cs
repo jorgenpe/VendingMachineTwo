@@ -7,13 +7,15 @@ using VendingMachine.Model;
 
 namespace VendingMachine.Service
 {
-    public class VendingMachineService
+    public class VendingMachineService : IVending
     {
-        private Product[] products = new Product[10];
+        private static readonly Product[] products = {  new Candy(1, 15, "CandyOne", "Chocolate", "DescriptionOne Candy"), new Drink(2, 10, "DrinkOne", "Cola", "Can", "DescriptionOne Drink"),
+                                       new Food(3, 25, "FoodOne", "Sandwich", "DescriptionOne Food"),new Drink(4, 10, "DrinkOne", "Applejuice", "Bottle", "DescriptionTwo Drink"),
+                                       new Food(5, 25, "FoodTwo", "Sandwich", "DescriptionTwo Food") };
         protected static readonly int[] currencyOptions = { 1, 5, 10, 20, 50, 100, 200, 500, 1000 };
         private int moneyInserted = 0;
 
-        Product Purchase(int id)
+        public Product Purchase(int id)
         {
 
             for (int i = 0; i < products.Length; i++)
@@ -29,19 +31,19 @@ namespace VendingMachine.Service
         }
 
 
-        List<string> ShowAll()
+        public List<string> ShowAll()
         {
 
             List<string> list = new List<string>();
             foreach (Product product in products)
             {
-                list.Append($"{product.Id}: {product.ProductName}  {product.PriceOfProduct}");
+                list.Add($"{product.Id}: {product.ProductName} {product.PriceOfProduct}");
             }
 
             return list;
         }
 
-        string Details(int id)
+        public string Details(int id)
         {
             for (int i = 0; i < products.Length; i++)
             {
@@ -55,24 +57,23 @@ namespace VendingMachine.Service
         }
 
 
-        void InsertMoney(int money)
+        public int InsertMoney(int money)
         {
             for (int i = 0; i < currencyOptions.Length; i++)
             {
                 if (currencyOptions[i] == money)
                 {
-                    moneyInserted = money;
-                }
-                else
-                {
-                    throw new ArgumentException(" Your money are not of the right currency");
-                }
+                    moneyInserted = moneyInserted + money;
+                    return money;
+                }      
+                
             }
+            throw new ArgumentException(" Your money are not of the right currency");
 
         }
 
 
-        Dictionary<int, int> EndTransactin()
+        public Dictionary<int, int> EndTransaction()
         {
 
             Dictionary<int, int> result = new Dictionary<int, int>();
@@ -86,67 +87,25 @@ namespace VendingMachine.Service
                     modelus = currencyOptions[i];
                     rest = moneyInserted % modelus;
                     moneyInserted = moneyInserted - rest;
-                    result.Add(currencyOptions[i], moneyInserted / currencyOptions[i]);
+                    try
+                    {
+                        result.Add(currencyOptions[i], moneyInserted / currencyOptions[i]);
+                    }catch (ArgumentException)
+                    {
+                        throw new Exception($"An element with key = {currencyOptions[i]} already exists ") ;
+                    }
+                    
                     moneyInserted = rest;
                 }
 
 
             }
-
-
-
-            return null;
-        }
-
-        public Product CreateFood(int id, int price, string name, string foodType, string foodDescription)
-        {
-            Food product = new Food(id, price, name, foodType, foodDescription);
-            for (int i = 0; i < products.Length; i++)
-            {
-                if (products[i] == null)
-                {
-                    products[i] = product;
-                    return product;
-                }
-            }
-            return null;
-        }
-
-        public Product CreateDrink(int id, int price, string name, string beverageType, string packageType, string beverageDescription)
-
-        {
-            Drink product = new Drink(id, price, name, beverageType, packageType, beverageDescription);
-            for (int i = 0; i < products.Length; i++)
-            {
-                if (products[i] == null)
-                {
-                    products[i] = product;
-                    return product;
-                }
-            }
-            return null;
-
-        }
-
-        public Product CreateCandy(int id, int price, string name, string candyType, string candyDescription)
-        {
-            Candy product = new Candy(id, price, name, candyType, candyDescription);
-            for (int i = 0; i < products.Length; i++)
-            {
-                if (products[i] == null)
-                {
-                    products[i] = product;
-                    return product;
-                }
-            }
-            return null;
+            return result;
         }
 
         public void Clear()
         {
-            products = new Product[10];
             moneyInserted = 0;
         }
-
     }
 }

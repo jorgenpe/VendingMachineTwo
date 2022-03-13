@@ -53,7 +53,7 @@ namespace VendingMachine.Tests.Model
             product.CandyDescription = "candyDeescription two";
 
             string expected = "Open the rapper and eat your candy";
-            string expectedTwo = "testType: candyDeescription two";
+            string expectedTwo = "1: price: 2: testName: testType: candyDeescription two";
 
             Assert.NotNull( product.Examine());
             Assert.Equal(expectedTwo, product.Examine());

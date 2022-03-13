@@ -58,10 +58,10 @@ namespace VendingMachine.Tests.Model
 
             string expected = " Open the cap and you can now drink from the bottle.";
             string expectedOne = " Bend the opener to uprigth posion and then bend it back to original posion. You can now drink from the can.";
-            string expectedTwo = "testType: Bottle: candyDeescription two";
+            string expectedTwo = "1: price: 2: testName: testType: Bottle: candyDeescription two";
 
             Assert.Equal(expectedOne, product.Use());
-
+            Assert.NotEqual(expectedTwo, product.Examine());
             product.PackageType = "Bottle";
 
             Assert.NotNull(product.Examine());

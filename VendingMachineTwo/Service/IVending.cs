@@ -7,12 +7,13 @@ using VendingMachine.Model;
 
 namespace VendingMachine.Service
 {
-    interface IVending
+    public interface IVending
     {
         Product Purchase(int id);
         List<string> ShowAll();
         string Details(int id);
-        void InsertMoney();
-        Dictionary<int, int> EndTransactin();
+        int InsertMoney(int money);
+        Dictionary<int, int> EndTransaction();
+        void Clear();
     }
 }

@@ -17,6 +17,8 @@ namespace VendingMachine.Model
 
         public string FoodDescription { get { return foodDescription; } set { foodDescription = value; } }
 
+        public Food(int id) :base(id) { }
+
         public Food(int id, int priceOfProduct, string productName, string foodType, string foodDescription) : base(id, priceOfProduct, productName)
         {
             FoodType = foodType;
@@ -25,7 +27,7 @@ namespace VendingMachine.Model
 
         public override string Examine()
         {
-            return $" {FoodType}: {FoodDescription} ";
+            return $"{ id}: price: { priceOfProduct}: { productName}: { FoodType}: {FoodDescription} ";
         }
 
         public override string Use()
